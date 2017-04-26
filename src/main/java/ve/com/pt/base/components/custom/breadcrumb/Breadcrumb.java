@@ -1,4 +1,4 @@
-package ve.com.pt.base.components.breadcrumb;
+package ve.com.pt.base.components.custom.breadcrumb;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -8,12 +8,17 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 import ve.com.pt.MyUI;
+import ve.com.pt.base.components.custom.breadcrumb.events.BreadcrumbEventAdd;
+import ve.com.pt.base.components.custom.breadcrumb.events.BreadcrumbEventClean;
+import ve.com.pt.base.core.views.main.MainUIConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by bpena on 4/21/17.
+ * Breaccrumb:
+ *
+ * Creado por bpena el 21/04/2017.
  */
 public class Breadcrumb extends HorizontalLayout {
     private static final String SEPARATOR = ">";
@@ -21,7 +26,7 @@ public class Breadcrumb extends HorizontalLayout {
     private List<BreadcrumbItem> itemList;
 
     public Breadcrumb() {
-        this.bus = (EventBus) UI.getCurrent().getSession().getAttribute(MyUI.BUS_NAME);
+        this.bus = (EventBus) UI.getCurrent().getSession().getAttribute(MainUIConstants.BUS_NAME);
         this.bus.register(this);
 
         this.itemList = new ArrayList<>();
@@ -30,35 +35,15 @@ public class Breadcrumb extends HorizontalLayout {
     }
 
     @Subscribe
-    private void EventHandler(BreadcrumbEvent event) {
-        try {
-            switch (event.getAction()) {
-                case ADD_ITEM:
-                        this.addItem(event.getItem());
-                    break;
-                case REMOVE_ITEM:
-                    break;
-                case CLEAN:
-                    this.clean();
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addItem(BreadcrumbItem item) throws Exception {
-        if (item == null)
-            throw new BreadcrumbException("No Item is defined");
-
+    private void addItem(BreadcrumbEventAdd event) {
         Boolean itemExist = this.itemList
                 .stream()
                 .map(BreadcrumbItem::getLabel)
-                .anyMatch(item.getLabel()::equals);
+                .anyMatch(event.getItem().getLabel()::equals);
 
         if (!itemExist) {
-            item.setPos(this.itemList.size());
-            this.itemList.add(item);
+            event.getItem().setPos(this.itemList.size());
+            this.itemList.add(event.getItem());
             this.updateView();
         }
     }
@@ -67,7 +52,8 @@ public class Breadcrumb extends HorizontalLayout {
 
     }
 
-    private void clean() {
+    @Subscribe
+    private void clean(BreadcrumbEventClean event) {
         this.itemList = new ArrayList<>();
         this.updateView();
     }

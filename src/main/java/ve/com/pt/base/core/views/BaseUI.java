@@ -1,9 +1,12 @@
 package ve.com.pt.base.core.views;
 
 import com.vaadin.ui.CssLayout;
+import ve.com.pt.base.core.annotations.Function;
 
 /**
- * Created by bpena on 4/20/17.
+ * BaseUI:
+ *
+ * Creado por bpena el 20/04/2017.
  */
 public abstract class BaseUI extends CssLayout {
     protected  boolean preNew() {
@@ -56,7 +59,9 @@ public abstract class BaseUI extends CssLayout {
         }
     }
 
+    @Function(action = "delete")
     protected boolean deleteAction() {
+        System.out.println("borrando");
         return true;
     }
 

@@ -1,4 +1,4 @@
-package ve.com.pt.base.components.breadcrumb;
+package ve.com.pt.base.components.custom.breadcrumb;
 
 /**
  * Created by bpena on 4/21/17.

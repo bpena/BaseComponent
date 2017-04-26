@@ -1,7 +1,9 @@
-package ve.com.pt.base.components.breadcrumb;
+package ve.com.pt.base.components.custom.breadcrumb;
 
 /**
- * Created by bpena on 4/21/17.
+ * BreadcrumbException:
+ *
+ * Creado por bpena el 21/04/2017.
  */
 public class BreadcrumbException extends RuntimeException {
     public BreadcrumbException() {
